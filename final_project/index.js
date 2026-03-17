@@ -4,7 +4,7 @@ const session = require("express-session");
 const customer_routes = require("./router/auth_users.js").authenticated;
 const genl_routes = require("./router/general.js").general;
 
-const app = express();
+export const app = express();
 
 app.use(express.json());
 
@@ -18,7 +18,19 @@ app.use(
 );
 
 app.use("/customer/auth/*", function auth(req, res, next) {
-  //Write the authenication mechanism here
+  const token = req.session?.token;
+
+  if (!token) {
+    res.status(401).json({ message: "Unauthorized user" });
+    return;
+  }
+
+  try {
+    jwt.verify(req.session.token, process.env["JWT_SECRET"], {});
+    next();
+  } catch (e) {
+    res.status(403).json({ message: "Invalid credentials" });
+  }
 });
 
 const PORT = 5000;
