@@ -126,3 +126,10 @@ describe("GET /title/:title", () => {
     expect(res.body).toEqual(books[1]);
   });
 });
+
+describe("GET /", () => {
+  it("shows all books", async () => {
+    const res = await app.get("/").expect(200);
+    expect(res.body).toEqual(books);
+  });
+});
