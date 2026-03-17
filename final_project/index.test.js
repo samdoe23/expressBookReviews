@@ -114,3 +114,15 @@ describe("GET /author/:author", () => {
     expect(res.body).toEqual(books[1]);
   });
 });
+
+describe("GET /title/:title", () => {
+  it("handles not found", async () => {
+    const res = await app.get("/title/Some title").expect(404);
+    expect(res.body).toEqual({ message: "Book not found" });
+  });
+
+  it("handles found", async () => {
+    const res = await app.get("/title/Things Fall Apart").expect(200);
+    expect(res.body).toEqual(books[1]);
+  });
+});
