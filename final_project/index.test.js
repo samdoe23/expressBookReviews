@@ -102,3 +102,15 @@ describe("GET /isbn/:isbn", () => {
     expect(res.body).toEqual(books[1]);
   });
 });
+
+describe("GET /author/:author", () => {
+  it("handles not found", async () => {
+    const res = await app.get("/author/Sam Doe").expect(404);
+    expect(res.body).toEqual({ message: "Book not found" });
+  });
+
+  it("handles found", async () => {
+    const res = await app.get("/author/Chinua Achebe").expect(200);
+    expect(res.body).toEqual(books[1]);
+  });
+});
