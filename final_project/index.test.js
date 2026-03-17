@@ -2,8 +2,9 @@ import { describe, it, expect } from "vitest";
 import request from "supertest";
 import { app as indexApp } from "./index.js";
 import { beforeEach } from "vitest";
+import { parseSetCookie } from "set-cookie-parser";
 
-let app = request.agent(indexApp);
+let app = request(indexApp);
 let username = crypto.randomUUID();
 let password = crypto.randomUUID();
 
@@ -71,7 +72,11 @@ describe("POST /customer/login", () => {
   it("handles valid payload", async () => {
     await app.post("/register").send({ username, password });
     const res = await app.post("/customer/login").send({ username, password });
+    const sessCookie = parseSetCookie(res).find(
+      (cookie) => cookie.name === "connect.sid",
+    );
     expect(res.status).toBe(200);
     expect(res.body).toEqual({ message: "Successfully logged in" });
+    expect(sessCookie).toBeDefined();
   });
 });
