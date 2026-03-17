@@ -3,14 +3,14 @@ import request from "supertest";
 import { app as indexApp } from "./index.js";
 import { beforeEach } from "vitest";
 import { parseSetCookie } from "set-cookie-parser";
+import books from "./router/booksdb.js";
 
 let app = request(indexApp);
 let agent = request.agent(indexApp);
+let username = crypto.randomUUID();
+let password = crypto.randomUUID();
 
 describe("login / register", () => {
-  let username = crypto.randomUUID();
-  let password = crypto.randomUUID();
-
   beforeEach(() => {
     username = crypto.randomUUID();
     password = crypto.randomUUID();
@@ -88,5 +88,17 @@ describe("login / register", () => {
       expect(res.body).toEqual({ message: "Successfully logged in" });
       expect(sessCookie).toBeDefined();
     });
+  });
+});
+
+describe("GET /isbn/:isbn", () => {
+  it("handles not found", async () => {
+    const res = await app.get("/isbn/32190").expect(404);
+    expect(res.body).toEqual({ message: "Book not found" });
+  });
+
+  it("handles found", async () => {
+    const res = await app.get("/isbn/1").expect(200);
+    expect(res.body).toEqual(books[1]);
   });
 });
