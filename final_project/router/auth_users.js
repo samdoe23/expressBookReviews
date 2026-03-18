@@ -44,6 +44,13 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
   return res.status(200).json({ message: "Review saved" });
 });
 
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+  const book = books[req.params.isbn];
+  if (!book) return res.status(404).json({ message: "Book not found" });
+  book.reviews[req.token.sub] = undefined;
+  return res.status(200).json({ message: "Review deleted" });
+});
+
 export const authenticated = regd_users;
 const _isValid = isValid;
 export { _isValid as isValid };

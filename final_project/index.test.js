@@ -191,3 +191,36 @@ describe("GET /review/:isbn", () => {
     expect(res.body).toEqual(books[1].reviews);
   });
 });
+
+describe("DELETE /review/:isbn", () => {
+  it("blocks unauthenticated requests", async () => {
+    await app
+      .delete("/customer/auth/review/1")
+      .send()
+      .expect(401)
+      .expect({ message: "Unauthorized user" });
+  });
+
+  describe("authenticated", () => {
+    beforeAll(async () => {
+      await agent.post("/customer/login").send({ username, password });
+    });
+
+    it("handles non-existent book", async () => {
+      await agent
+        .delete("/customer/auth/review/2312132")
+        .send()
+        .expect(404)
+        .expect({ message: "Book not found" });
+    });
+
+    it("deletes a review", async () => {
+      await agent
+        .delete("/customer/auth/review/1")
+        .send()
+        .expect(200)
+        .expect({ message: "Review deleted" });
+      await app.get("/review/1").expect(200).expect({});
+    });
+  });
+});
