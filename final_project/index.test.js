@@ -4,6 +4,7 @@ import { app as indexApp } from "./index.js";
 import { beforeEach } from "vitest";
 import { parseSetCookie } from "set-cookie-parser";
 import books from "./router/booksdb.js";
+import { beforeAll } from "vitest";
 
 let app = request(indexApp);
 let agent = request.agent(indexApp);
@@ -92,7 +93,7 @@ describe("login / register", () => {
 });
 
 describe("GET /isbn/:isbn", () => {
-  it("handles not found", async () => {
+  it("handles non-existent book", async () => {
     const res = await app.get("/isbn/32190").expect(404);
     expect(res.body).toEqual({ message: "Book not found" });
   });
@@ -104,7 +105,7 @@ describe("GET /isbn/:isbn", () => {
 });
 
 describe("GET /author/:author", () => {
-  it("handles not found", async () => {
+  it("handles non-existent book", async () => {
     const res = await app.get("/author/Sam Doe").expect(404);
     expect(res.body).toEqual({ message: "Book not found" });
   });
@@ -116,7 +117,7 @@ describe("GET /author/:author", () => {
 });
 
 describe("GET /title/:title", () => {
-  it("handles not found", async () => {
+  it("handles non-existent book", async () => {
     const res = await app.get("/title/Some title").expect(404);
     expect(res.body).toEqual({ message: "Book not found" });
   });
@@ -131,5 +132,48 @@ describe("GET /", () => {
   it("shows all books", async () => {
     const res = await app.get("/").expect(200);
     expect(res.body).toEqual(books);
+  });
+});
+
+describe("PUT /auth/review", () => {
+  const review =
+    "The alarm clock that is louder than God's own belongs to the roommate with the earliest class.";
+
+  it("blocks unauthenticated requests", async () => {
+    await app
+      .put("/customer/auth/review/1")
+      .send({ review })
+      .expect(401)
+      .expect({ message: "Unauthorized user" });
+  });
+
+  describe("authenticated", () => {
+    beforeAll(async () => {
+      await agent.post("/customer/login").send({ username, password });
+    });
+
+    it("handles empty review", async () => {
+      await agent
+        .put("/customer/auth/review/1")
+        .send()
+        .expect(400)
+        .expect({ message: "Empty review" });
+    });
+
+    it("handles non-existent book", async () => {
+      await agent
+        .put("/customer/auth/review/2312132")
+        .send({ review })
+        .expect(404)
+        .expect({ message: "Book not found" });
+    });
+
+    it("saves a review", async () => {
+      await agent
+        .put("/customer/auth/review/1")
+        .send({ review })
+        .expect(200)
+        .expect({ message: "Review saved" });
+    });
   });
 });

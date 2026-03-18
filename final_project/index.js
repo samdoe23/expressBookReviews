@@ -26,7 +26,8 @@ app.use("/customer/auth/*", function auth(req, res, next) {
   }
 
   try {
-    jwt.verify(req.session.token, process.env["JWT_SECRET"], {});
+    const token = jwt.verify(req.session.token, process.env["JWT_SECRET"], {});
+    req.token = token;
     next();
   } catch (e) {
     res.status(403).json({ message: "Invalid credentials" });
