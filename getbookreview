@@ -1,3 +1,5 @@
+# curl command
 curl localhost:5000/review/1
 
+# output
 {}

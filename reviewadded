@@ -1,4 +1,5 @@
-# curl
+# curl command
 curl localhost:5000/customer/auth/review/1 -X PUT -H Content-Type:application/json -d '{"review": "Foo bar"}' -b "connect.sid=s%3ASEO2-RVwgtoHdpGJK0DVG_zBega086Dt.5m99WByMP99CAwJIh8F%2F%2FbJeYrfgm6XgX0E5mjuvMuk"
 
+# output
 {"message":"Review added/updated successfully"}

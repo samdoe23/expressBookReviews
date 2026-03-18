@@ -1,3 +1,5 @@
+# curl command
 curl -s https://api.github.com/repos/samdoe23/expressBookReviews | jq '.parent.full_name'
 
+# output
 "ibm-developer-skills-network/expressBookReviews"
