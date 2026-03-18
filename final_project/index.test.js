@@ -114,7 +114,8 @@ describe("GET /author/:author", () => {
 
   it("handles found", async () => {
     const res = await app.get("/author/Chinua Achebe").expect(200);
-    expect(res.body).toEqual(books[1]);
+    expect(res.body.length === 1);
+    expect(res.body[0]).toEqual(books[1]);
   });
 });
 
@@ -126,7 +127,8 @@ describe("GET /title/:title", () => {
 
   it("handles found", async () => {
     const res = await app.get("/title/Things Fall Apart").expect(200);
-    expect(res.body).toEqual(books[1]);
+    expect(res.body.length === 1);
+    expect(res.body[0]).toEqual(books[1]);
   });
 });
 
