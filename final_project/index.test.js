@@ -179,3 +179,15 @@ describe("PUT /auth/review", () => {
     });
   });
 });
+
+describe("GET /review/:isbn", () => {
+  it("handles non-existent book", async () => {
+    const res = await app.get("/isbn/32190").expect(404);
+    expect(res.body).toEqual({ message: "Book not found" });
+  });
+
+  it("shows book reviews", async () => {
+    const res = await app.get("/review/1").expect(200);
+    expect(res.body).toEqual(books[1].reviews);
+  });
+});
