@@ -223,7 +223,7 @@ describe("DELETE /review/:isbn", () => {
         .delete("/customer/auth/review/1")
         .send()
         .expect(200)
-        .expect({ message: "Review deleted" });
+        .expect({ message: "Review for ISBN 1 deleted" });
       await app.get("/review/1").expect(200).expect({});
     });
   });

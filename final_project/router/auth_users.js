@@ -45,10 +45,11 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
 });
 
 regd_users.delete("/auth/review/:isbn", (req, res) => {
-  const book = books[req.params.isbn];
+  const isbn = req.params.isbn;
+  const book = books[isbn];
   if (!book) return res.status(404).json({ message: "Book not found" });
   book.reviews[req.token.sub] = undefined;
-  return res.status(200).json({ message: "Review deleted" });
+  return res.status(200).json({ message: `Review for ISBN ${isbn} deleted` });
 });
 
 export const authenticated = regd_users;
