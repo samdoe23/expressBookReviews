@@ -1,3 +1,3 @@
 curl localhost:5000/title/Things%20Fall%20Apart
 
-{"author":"Chinua Achebe","title":"Things Fall Apart","reviews":{}}
+[{"author":"Chinua Achebe","title":"Things Fall Apart","reviews":{}}]
