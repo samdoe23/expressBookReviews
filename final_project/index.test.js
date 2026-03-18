@@ -174,6 +174,8 @@ describe("PUT /auth/review", () => {
         .send({ review })
         .expect(200)
         .expect({ message: "Review saved" });
+      const res = await app.get("/isbn/1");
+      expect(res.body.reviews).toEqual({ [username]: review });
     });
   });
 });
