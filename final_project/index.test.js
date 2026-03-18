@@ -40,7 +40,9 @@ describe("login / register", () => {
     it("handles valid payload", async () => {
       const res = await app.post("/register").send({ username, password });
       expect(res.status).toBe(200);
-      expect(res.body).toEqual({ message: "User registered" });
+      expect(res.body).toEqual({
+        message: "User successfully registered. Now you can login",
+      });
     });
   });
 

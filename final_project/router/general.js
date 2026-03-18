@@ -17,7 +17,9 @@ public_users.post("/register", (req, res) => {
     return res.status(409).json({ message: "Username already registered" });
   }
   users.push({ username, password: hash("sha256", password) });
-  return res.status(200).json({ message: "User registered" });
+  return res
+    .status(200)
+    .json({ message: "User successfully registered. Now you can login" });
 });
 
 // Get the book list available in the shop
