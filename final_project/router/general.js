@@ -1,9 +1,9 @@
-const express = require("express");
-const crypto = require("crypto");
-let books = require("./booksdb.js");
-let isValid = require("./auth_users.js").isValid;
-let users = require("./auth_users.js").users;
-const public_users = express.Router();
+import { Router } from "express";
+import { hash } from "crypto";
+import books from "./booksdb.js";
+import { isValid } from "./auth_users.js";
+import { users } from "./auth_users.js";
+const public_users = Router();
 
 public_users.post("/register", (req, res) => {
   const { username, password } = req.body;
@@ -16,7 +16,7 @@ public_users.post("/register", (req, res) => {
   if (!isValid(username)) {
     return res.status(409).json({ message: "Username already registered" });
   }
-  users.push({ username, password: crypto.hash("sha256", password) });
+  users.push({ username, password: hash("sha256", password) });
   return res.status(200).json({ message: "User registered" });
 });
 
@@ -51,9 +51,9 @@ public_users.get("/title/:title", function (req, res) {
 });
 
 //  Get book review
-public_users.get("/review/:isbn", function (req, res) {
+public_users.get("/review/:isbn", function (_req, res) {
   //Write your code here
   return res.status(300).json({ message: "Yet to be implemented" });
 });
 
-module.exports.general = public_users;
+export const general = public_users;

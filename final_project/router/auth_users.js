@@ -1,8 +1,8 @@
-const express = require("express");
-const jwt = require("jsonwebtoken");
-const crypto = require("crypto");
-let books = require("./booksdb.js");
-const regd_users = express.Router();
+import { Router } from "express";
+import jwt from "jsonwebtoken";
+import { hash } from "crypto";
+import books from "./booksdb.js";
+const regd_users = Router();
 
 /** @type {{username:string,password:string}[]} */
 let users = [];
@@ -14,7 +14,7 @@ const isValid = (username) => {
 const authenticatedUser = (username, password) => {
   const user = users.find((u) => u.username === username);
   if (!user) return false;
-  return user.password === crypto.hash("sha256", password);
+  return user.password === hash("sha256", password);
 };
 
 regd_users.post("/login", (req, res) => {
@@ -44,6 +44,8 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
   return res.status(200).json({ message: "Review saved" });
 });
 
-module.exports.authenticated = regd_users;
-module.exports.isValid = isValid;
-module.exports.users = users;
+export const authenticated = regd_users;
+const _isValid = isValid;
+export { _isValid as isValid };
+const _users = users;
+export { _users as users };

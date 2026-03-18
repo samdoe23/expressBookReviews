@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import request from "supertest";
-import { app as indexApp } from "./index.js";
+import indexApp from "./app.js";
 import { beforeEach } from "vitest";
 import { parseSetCookie } from "set-cookie-parser";
 import books from "./router/booksdb.js";
