@@ -29,7 +29,7 @@ regd_users.post("/login", (req, res) => {
     return res.status(400).json({ message: "Invalid credentials" });
   }
   req.session.token = jwt.sign({ sub: username }, process.env["JWT_SECRET"]);
-  return res.status(200).json({ message: "Successfully logged in" });
+  return res.status(200).json({ message: "Successfully logged in", username });
 });
 
 // Add a book review

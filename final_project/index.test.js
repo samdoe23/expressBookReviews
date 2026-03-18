@@ -88,7 +88,7 @@ describe("login / register", () => {
         (cookie) => cookie.name === "connect.sid",
       );
       expect(res.status).toBe(200);
-      expect(res.body).toEqual({ message: "Successfully logged in" });
+      expect(res.body).toEqual({ message: "Successfully logged in", username });
       expect(sessCookie).toBeDefined();
     });
   });
