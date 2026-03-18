@@ -1,0 +1,3 @@
+curl localhost:5000/customer/auth/review/1 -X DELETE -b "connect.sid=s%3Ajex6Nc8tEC7UX8dj5xZs3kzMkcc_9jSw.gq9AhJpYinsYJwipffZWCDlc4fLX3cbeo4asI%2FvT%2Fpc"
+
+{"message":"Review deleted"}
